@@ -68,6 +68,8 @@ app.post('/api/login', (req,res)=>{
 
 //TODO['/api/register'] clean code; check for tests (didnt check)
 app.post('/api/register', (req,res)=>{
+  //can only create normal users
+  
   if(req.body.username && req.body.password && req.body.lastname && req.body.firstname && req.body.token){
     //verify token for admin only
     jwt.verify(req.body.token, process.env.JWT_SECRET_KEY,(err, data)=>{
