@@ -31,7 +31,6 @@ app.post('/api/', (req, res) => {
 app.post('/api/login', (req,res)=>{
   logd('Received Login Attempted: username->'+req.body.username+', pass->len('+req.body.password.length+')')
   if(req.body.username && req.body.password){
-        const forbidden_res = {status:403}
         con.query("select * from user where username = ?",[req.body.username], (err, result, fields) =>{
         if(err){ 
           callback(err) 
