@@ -36,10 +36,16 @@ function Login(){
             }else if(response.status == 200){
                 let parsedres = await response.json()
                 let local_token = parsedres.data.token
-                dispatch(setToken(local_token))
-                dispatch(Connected())
-                setMessage("Bienvenue")
-                navigate('/')
+                let id_role = parsedres.data.id_role;
+                if(id_role==0){
+                    dispatch(setToken(local_token))
+                    dispatch(Connected())
+                    setMessage("Bienvenue")
+                    navigate('/')
+                }else{
+                    setMessage("Mauvais Nom d'utulisateur ou Mot de Passe [FORBIDDEN]")
+                    setValidated(false)
+                }
             }
         }
         setValidated(true)
@@ -53,7 +59,7 @@ function Login(){
                     <Card className="shadow">
                     <Card.Body id="login">
                         <div className="mb-3 mt-md-4">
-                        <h2 className="fw-bold mb-2 text-uppercase txt-center">Agent</h2>
+                        <h2 className="fw-bold mb-2 text-uppercase txt-center">Agent Admin</h2>
                         <p className=" mb-5">Veuillez vous connectez</p>
                         <div className="mb-3">
                             <Form noValidate validated={validated} onSubmit={handlesubmit}>
