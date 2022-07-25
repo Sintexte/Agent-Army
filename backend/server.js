@@ -23,21 +23,19 @@ var con = mysql.createConnection({
 });
 
 
-app.get('/',(req, res)=> {
-  res.send("API")
-})
-
 app.post('/api/', (req, res) => {
-  res.send('API')
+  res.send({data:'API'})
 })
 
 //TODO['/api/login'] clean code; check for tests(doesnt break for multiple use cases); 
 app.post('/api/login', (req,res)=>{
+  logd('Received Login Attempted: username->'+req.body.username+', pass->len('+req.body.password.length+')')
   if(req.body.username && req.body.password){
-      con.query("select * from user where username = ?",[req.body.username], (err, result, fields) =>{
+        const forbidden_res = {status:403}
+        con.query("select * from user where username = ?",[req.body.username], (err, result, fields) =>{
         if(err){ 
           callback(err) 
-          return res.send(403)
+          return res.sendStatus(403)
         }
         if(result.length){
           let role = result[0].id_role
@@ -49,9 +47,8 @@ app.post('/api/login', (req,res)=>{
                   username: req.body.username,
                   id_role: role
               }
-            
+              
               const token = jwt.sign(data, jwtSecretKey);
-            
               return res.send({data:{"token":token}});
             }
             else return res.sendStatus(403)
@@ -97,7 +94,7 @@ app.post('/api/register', (req,res)=>{
 })
 
 app.listen(port, () => {
-  logd(`Starting BackEnd Server {Agent_army/web_admin} on port ${port}`)
+  logd(`BackEnd Server host->${process.env.HOST}:${port}`)
   init_backend()
 })
 
