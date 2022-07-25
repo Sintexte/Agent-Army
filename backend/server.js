@@ -49,7 +49,7 @@ app.post('/api/login', (req,res)=>{
               }
               
               const token = jwt.sign(data, jwtSecretKey);
-              return res.send({data:{"token":token}});
+              return res.send({data:{"token":token,"id_role":role}});
             }
             else return res.sendStatus(403)
           })
@@ -65,9 +65,18 @@ app.post('/api/login', (req,res)=>{
 
 //TODO['/api/register'] clean code; check for tests (didnt check)
 app.post('/api/register', (req,res)=>{
-  //can only create normal users
+  //register is only used for agent not admins
+  //if u wanna create an admin account you have to do it manualy by switching roles
   
   if(req.body.username && req.body.password && req.body.lastname && req.body.firstname && req.body.token){
+    //check for length 
+    if(req.body.username.length < parseInt(process.env.MINLEN_USER, 10) || req.body.password.length < parseInt(process.env.MINLEN_PASS, 10)){
+      logd("Username or password too short")
+      res.statusMessage = "Username or Password too short"
+      res.sendStatus(400)
+      return
+    }
+
     //verify token for admin only
     check_username(req.body.username).then((response)=>{
       if(response===0){
@@ -114,11 +123,8 @@ app.get("/api/check", (req,res)=>{
 })
 
 app.listen(port, () => {
-  logd(`BackEnd Server host->${process.env.HOST}:${port} network->${ip.address()}:${port}`)
+  logd(`BackEnd Server API \n   [+]network-> ${ip.address()}:${port}\n   [+]local-> ${process.env.HOST}:${port} `)
   init_backend()
-  console.log();
-  /*
-  */
 })
 
 check_username = (str_user) => {
