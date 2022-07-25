@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const mysql = require('mysql')
 const bcrypt = require('bcryptjs')
 const app = express()
+const ip = require("ip")
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
@@ -68,35 +69,74 @@ app.post('/api/register', (req,res)=>{
   
   if(req.body.username && req.body.password && req.body.lastname && req.body.firstname && req.body.token){
     //verify token for admin only
-    jwt.verify(req.body.token, process.env.JWT_SECRET_KEY,(err, data)=>{
-      if(data == undefined) res.sendStatus(403);return
-      console.log(data);
-    })
-    //hashing password
-    bcrypt.hash(req.body.password, 1,(err,hash)=>{
-      if(err){ 
-        logd("Error while Hashing the Password")
-        console.log(err)
-        res.sendStatus(500);return
+    check_username(req.body.username).then((response)=>{
+      if(response===0){
+        //userdoesnt exist
+        //username is unique
+        jwt.verify(req.body.token, process.env.JWT_SECRET_KEY,(err, data)=>{
+          if(data == undefined) res.sendStatus(403);return
+          console.log(data);
+        })
+        //hashing password
+        bcrypt.hash(req.body.password, 1,(err,hash)=>{
+          if(err){ 
+            logd("Error while Hashing the Password")
+            console.log(err)
+            res.sendStatus(500);return
+          }
+          con.query("insert into user (username,password,firstname,lastname,id_role) VALUES (?,?,?,?,1)",
+                      [req.body.username, hash, req.body.firstname, req.body.lastname], (err, result)=> {
+                        if(err) throw err;
+                        logd("User->"+req.body.username+" Created") 
+    
+                        res.sendStatus(200);return
+                      })
+        })
       }
-      con.query("insert into user (username,password,firstname,lastname,id_role) VALUES (?,?,?,?,1)",
-                  [req.body.username, hash, req.body.firstname, req.body.lastname], (err, result)=> {
-                    if(err) throw err;
-                    logd("User Was Created") 
-
-                    res.sendStatus(200);return
-                  })
+      else if(response !== undefined){
+        res.sendStatus(409);return
+      }else{
+        res.sendStatus(500)
+      }
     })
   }else{
       res.sendStatus(400);return
   }
 })
 
-app.listen(port, () => {
-  logd(`BackEnd Server host->${process.env.HOST}:${port}`)
-  init_backend()
+app.post("/api/check", (req,res)=>{
+  res.sendStatus(200)
 })
 
+
+app.get("/api/check", (req,res)=>{
+  res.sendStatus(200)
+})
+
+app.listen(port, () => {
+  logd(`BackEnd Server host->${process.env.HOST}:${port} network->${ip.address()}:${port}`)
+  init_backend()
+  console.log();
+  /*
+  */
+})
+
+check_username = (str_user) => {
+  return new Promise((resolve, reject)=>{
+    con.query("select * from user where username=?", [str_user], (err, result, fields) =>{
+      if(err){ 
+        callback(err) 
+        resolve(-1)
+      }
+      if(result.length){
+        resolve(result)
+      }else{
+        resolve(0)
+      }
+    })
+  })
+  
+}
 
 init_backend = () => {
   //TODO create db and tables if not found
