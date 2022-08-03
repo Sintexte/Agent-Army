@@ -1,32 +1,47 @@
+import PanelForm from "./PanelForm";
 import PanelHome from "./PanelHome";
+import PanelLocalisation from "./PanelLocalisation";
+import PanelUser from "./PanelUser";
 
 function PanelBody(props){
     const stylebody ={
-        margin:'20px'
+        padding:'20px',
+        height:"100vh",
+        overflowX: "hidden",
+        overflowY: "auto"
     }
     let page = props.bodypage
     switch (page) {
         case 'localisation':
             return(
                 <div style={stylebody}>
-                    localisation
+                    <PanelLocalisation />
                 </div>
             )
-            break;
         case 'user':
             return(
-                <div>
-                    page1
+                <div style={stylebody}>
+                    <PanelUser />
                 </div>
             )
-            break
+        case 'form':
+            return(
+                <div style={stylebody}>
+                    <PanelForm />
+                </div>
+            )
+        case 'analytics':
+            return(
+                <div style={stylebody}>
+                    analytics
+                </div>
+            )
         default:
             return(
                 <div style={stylebody}>
                     <PanelHome />
                 </div>
             )
-            break;
     }
 
     

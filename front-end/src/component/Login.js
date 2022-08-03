@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {useSelector, useDispatch} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import {setToken, Connected} from "../redux/userconnection"
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom'
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 function Login(){
     const [validated, setValidated] = useState(false)
     const [message, setMessage] = useState(false)
-    const { token } = useSelector((state)=>state.userconnection)
+    //const { token } = useSelector((state)=>state.userconnection)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const  handlesubmit = async (event) =>{
@@ -56,11 +56,13 @@ function Login(){
         }
     }
     
+    document.title="Login"
+
     fetch('check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
     }).then((res)=>{
-        if(res.status == 200){
+        if(res.status === 200){
             console.log("server up");
         }else{
             console.log("server down");
@@ -73,7 +75,7 @@ function Login(){
                 <Row className="vh-100 d-flex justify-content-center align-items-center">
                 <Col md={8} lg={6} xs={12}>
                     <div className="border border-3 border-primary" style={{borderRadius:"7px 7px 0px 0px"}}></div>
-                    <Card className="shadow" style={{borderRadius:"0px 0px 7px 7px"}}>
+                    <Card className="" style={{borderRadius:"0px 0px 7px 7px"}}>
                     <Card.Body id="login">
                         <div className="mb-3 mt-md-4">
                         <h2 className="fw-bold mb-2 text-uppercase txt-center">Agent Admin</h2>
