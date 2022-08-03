@@ -17,7 +17,9 @@ export const userconnectionSlice = createSlice({
             state.connected = true
         },
         Disconnected: (state)=>{
-            localStorage.setItem('userConnected', false)
+            localStorage.removeItem('userConnected')
+            localStorage.removeItem('userJWT')
+            state.token = null
             state.connected = false
         }
     },

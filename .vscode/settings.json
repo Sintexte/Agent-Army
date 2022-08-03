@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "agentarmy.mysql.database.azure.com",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "agentforce",
+            "database": "agentarmy",
+            "username": "EYFi4@agentarmy",
+            "password": "9oEfX<<N2uhzIqW4"
+        }
+    ]
+}

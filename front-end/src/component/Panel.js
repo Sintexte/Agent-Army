@@ -1,7 +1,9 @@
-function Panel(){
+import PanelMenu from './PanelMenu';
+
+function Panel(props){
     return(
         <>
-            <h1>Panel Page</h1>
+            <PanelMenu />
         </>
     )
 }

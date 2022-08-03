@@ -10,8 +10,7 @@ function Login(){
     const { token } = useSelector((state)=>state.userconnection)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
-     const  handlesubmit = async (event) =>{
+    const  handlesubmit = async (event) =>{
         const form =  event.currentTarget
         
         if(form.checkValidity() === false){
@@ -27,32 +26,47 @@ function Login(){
             const username = form.formUsername.value
             const password = form.formPassword.value
             setMessage("Vérification ...")
-            const response = await fetch('login', {
+            fetch('login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
                 body:new URLSearchParams({
                     'username': username,
                     'password': password
                 })
-            })
-            if(response.status === 403){
-                setMessage("Mauvais Nom d'utulisateur ou Mot de Passe")
-            }else if(response.status === 200){
-                let parsedres = await response.json()
-                let local_token = parsedres.data.token
-                let id_role = parsedres.data.id_role;
-                if(id_role===0){
-                    dispatch(setToken(local_token))
-                    dispatch(Connected())
-                    setMessage("Bienvenue")
-                    navigate('/')
-                }else{
-                    setMessage("[FORBIDDEN]")
-                    setValidated(false)
+            }).then((res)=>{
+                if(res.status === 403){
+                    setMessage("Mauvais Nom d'utulisateur ou Mot de Passe")
+                }else if(res.status === 200){
+                    res.json().then((parsedres)=>{
+                        let local_token = parsedres.data.token
+                        let id_role = parsedres.data.id_role;
+                        if(id_role===0){
+                            dispatch(setToken(local_token))
+                            dispatch(Connected())
+                            setMessage("Bienvenue")
+                            navigate('/')
+                        }else{
+                            setMessage("[FORBIDDEN]")
+                            setValidated(false)
+                        }
+                    })
                 }
-            }
+            })
+            
         }
     }
+    
+    fetch('check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
+    }).then((res)=>{
+        if(res.status == 200){
+            console.log("server up");
+        }else{
+            console.log("server down");
+        }
+    })
+    
     return(
         <>
             <Container>
