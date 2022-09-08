@@ -5,9 +5,9 @@ import {
     CDBSidebarHeader,
     CDBSidebarMenu,
     CDBSidebarMenuItem
-  } from 'cdbreact';
+} from 'cdbreact';
 import { useState } from 'react';
-  import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PanelBody from './PanelBody';
 
 function PanelMenu(){

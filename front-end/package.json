@@ -2,27 +2,25 @@
   "name": "front-end",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://armyforce.azurewebsites.net:443/api/",
+  "proxy": "http://localhost:3001/api/",
   "dependencies": {
-    "@reduxjs/toolkit": "^1.8.3",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
-    "bootstrap": "^5.2.0",
+    "@reduxjs/toolkit": "^1.8.5",
+    "bootstrap": "^5.2.1",
     "bootstrap-icons": "^1.9.1",
     "cdbreact": "^1.5.3",
+    "mapbox-gl": "^2.10.0",
     "onsenui": "^2.12.2",
     "prop-types": "^15.8.1",
-    "ra-data-json-server": "^4.2.4",
+    "ra-data-json-server": "^4.3.1",
     "react": "^18.2.0",
-    "react-admin": "^4.2.4",
-    "react-bootstrap": "^2.4.0",
+    "react-bootstrap": "^1.6.6",
     "react-dom": "^18.2.0",
+    "react-map-gl": "^7.0.19",
     "react-onsenui": "^1.13.0",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^3.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -47,5 +45,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.18",
+    "@types/react-dom": "^18.0.6",
+    "npm-force-resolutions": "^0.0.10"
   }
 }
