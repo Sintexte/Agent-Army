@@ -5,22 +5,35 @@ import PanelUser from "./PanelUser";
 
 function PanelBody(props){
     const stylebody ={
-        padding:'20px',
+        padding:"20px",
         height:"100vh",
         overflowX: "hidden",
-        overflowY: "auto"
+        overflowY: "auto",
     }
+
+    const stylebodylocalisation ={
+        height:"100vh",
+        overflowX: "hidden",
+        overflowY: "hidden",
+    }
+    const stylebodyuser ={
+        height:"100vh",
+        overflowX: "hidden",
+        overflowY: "auto",
+        width:"100%"
+    }
+
     let page = props.bodypage
     switch (page) {
         case 'localisation':
             return(
-                <div style={stylebody}>
+                <div style={stylebodylocalisation}>
                     <PanelLocalisation />
                 </div>
             )
         case 'user':
             return(
-                <div style={stylebody}>
+                <div style={stylebodyuser}>
                     <PanelUser />
                 </div>
             )
